@@ -1,11 +1,55 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { menus } from "./utils/constants";
+import {
+  NavLink,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import Todo from "./pages/todo-app/todo";
 
 function App() {
   return (
-    <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold">Hello Tailwind CSS v4!</h1>
-      <p className="mt-2">Running in GitHub Codespaces 🚀</p>
+    <div className="flex flex-col nin-h-screen">
+      <header className="font-bold text-4xl bg-blue-500 p-4 text-center text-white">
+        MERN STACK APPS
+      </header>
+
+      <Router>
+        <section
+          className="flex flex-1 min-h-full
+      "
+        >
+          <menu className="w-64 border-r-2">
+            <nav className="bg-gray-200 p-4">
+              <ul className="space-y-2">
+                {menus.map((menu, index) => (
+                  <li key={index}>
+                    <NavLink
+                      to={menu.link}
+                      className={({ isActive }: { isActive: boolean }) =>
+                        isActive
+                          ? "block p-2 rounded bg-gray-800 text-white"
+                          : "block p-2 rounded hover:bg-gray-600 hover:text-white"
+                      }
+                      aria-current="page"
+                    >
+                      {menu.name}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </menu>
+          <main className="flex-1 p-4 bg-white">
+            <Routes>
+              <Route path="/" element={<Todo />} />
+            </Routes>
+          </main>
+        </section>
+      </Router>
+      <footer className="bg-gray-500 text-white text-center p-2">Footer</footer>
     </div>
   );
 }
