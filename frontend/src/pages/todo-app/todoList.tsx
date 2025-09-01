@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Task } from "../../interfaces";
+import api from "../../axios-config";
 
 export default function TodoList({ taskList }: { taskList: Task[] }) {
   const [tasks, setTasks] = useState<Task[]>(taskList);
 
+  const getTasks = async () => {
+    const res = await api.get("/task");
+    setTasks([...res.data]);
+  };
+
   useEffect(() => {
-    if (tasks.length) {
-      const list =
-        taskList.filter((list: Task) => !tasks.find((t) => t.id === list.id)) ||
-        [];
-      setTasks([...tasks, ...list]);
-    } else {
-      setTasks([...taskList]);
-    }
+    getTasks();
   }, [taskList]);
 
-  const taskCompleted = (id: number) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, completed: true } : task
-    );
-    setTasks(updatedTasks);
+  const taskCompleted = async (id: string) => {
+    await api.patch(`task/${id}`, { completed: true });
+    getTasks();
+  };
+
+  const deleteTask = async (id: string) => {
+    await api.delete(`task/${id}`);
+    getTasks();
   };
 
   return (
@@ -29,7 +31,7 @@ export default function TodoList({ taskList }: { taskList: Task[] }) {
           <th className="border border-cyan-800 p-2">S.No</th>
           <th className="border border-cyan-800 p-2">Task Description</th>
           <th className="border border-cyan-800 p-2">Completed</th>
-          <th className="border border-cyan-800 p-2">Action</th>
+          <th className="border border-cyan-800 p-2">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -67,14 +69,14 @@ export default function TodoList({ taskList }: { taskList: Task[] }) {
               {task.completed ? "true" : "false"}
             </td>
             <td
-              className={`border border-cyan-800 p-2 text-center ${
+              className={`flex justify-center gap-5 border border-cyan-800 p-2 text-center ${
                 task.completed ? "line-through text-gray-400" : ""
               }`}
             >
               <button
                 type="button"
                 disabled={task.completed}
-                onClick={() => !task.completed && taskCompleted(task.id)}
+                onClick={() => !task.completed && taskCompleted(task._id)}
                 className={`border shadow p-2 rounded-md  ${
                   task.completed
                     ? "bg-blue-50 cursor-not-allowed hover:bg-blue-50"
@@ -82,6 +84,13 @@ export default function TodoList({ taskList }: { taskList: Task[] }) {
                 }`}
               >
                 Done
+              </button>
+              <button
+                type="button"
+                onClick={() => deleteTask(task._id)}
+                className="border shadow p-2 rounded-md bg-gray-400 hover:bg-gray-500 text-white"
+              >
+                Delete
               </button>
             </td>
           </tr>

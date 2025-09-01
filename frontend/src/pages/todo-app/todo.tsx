@@ -1,28 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoList from "./todoList";
 import { Task } from "../../interfaces";
+import api from "../../axios-config";
 
 export default function Todo() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [task, setTask] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+
+  const getTasks = async () => {
+    await api.get("/task").then((res) => {
+      console.log(res);
+      setTasks([...res.data]);
+    });
+  };
+
+  useEffect(() => {
+    getTasks();
+  }, []);
 
   const addTask = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (task.trim() === "") return;
-    setTasks([
-      ...tasks,
-      { id: tasks.length + 1, completed: false, description: task },
-    ]);
-    setTask("");
+    if (description.trim() === "") return;
+    api
+      .post(`/task`, { description, completed: false })
+      .then(() => getTasks())
+      .catch((error) =>
+        console.log(`There was an error while creating the task, ${error}`)
+      );
+    setDescription("");
   };
 
   const clearTask = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setTask("");
+    setDescription("");
   };
 
   const onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTask(e.target.value);
+    setDescription(e.target.value);
   };
 
   return (
@@ -41,7 +55,7 @@ export default function Todo() {
               id="task"
               name="task"
               type="text"
-              value={task}
+              value={description}
               placeholder="Add Your Task"
               onChange={onTextChange}
               className="mt-2 w-full block border p-1 rounded-sm border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
@@ -59,7 +73,7 @@ export default function Todo() {
               type="button"
               onClick={addTask}
               className={`p-2 text-white rounded-lg shadow ${
-                task.trim() === ""
+                description.trim() === ""
                   ? `bg-blue-300 cursor-not-allowed`
                   : `bg-blue-500 hover:bg-blue-600`
               }`}
