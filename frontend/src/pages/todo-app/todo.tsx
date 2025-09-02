@@ -13,10 +13,6 @@ export default function Todo() {
     });
   };
 
-  useEffect(() => {
-    getTasks();
-  }, []);
-
   const addTask = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (description.trim() === "") return;
