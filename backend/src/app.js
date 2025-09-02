@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./db-config/db.js";
 import router from "./routes/taskRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
+import imageRouter from "./routes/imageRoutes.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/task", router);
 app.use("/api/profile", profileRouter);
+app.use("/api/upload", imageRouter);
 
 // Error handler
 app.use((err, req, res, next) => {

@@ -24,10 +24,18 @@ const VisitingCard = () => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const params = Object.fromEntries(formData.entries());
-    await api.post("/profile", params);
-    formRef.current?.reset();
-    getvisitingCard();
+    await api
+      .post("/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(async (res) => {
+        const imageId = res.data.data._id;
+        const params = Object.fromEntries(formData.entries());
+        await api.post("/profile", { ...params, imageId });
+        formRef.current?.reset();
+        getvisitingCard();
+      })
+      .catch(console.log);
   };
 
   return (
@@ -109,11 +117,11 @@ const VisitingCard = () => {
               Upload Your Image:
             </label>
             <input
-              name="image"
+              name="file"
               type="file"
               accept="image/*"
               className="mt-2 w-full border-2 rounded shadow p-1.5"
-            ></input>
+            />
           </div>
           <div className="flex flex-row gap-2 justify-end">
             <button

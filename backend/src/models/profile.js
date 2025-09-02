@@ -12,6 +12,11 @@ const ProfileSchema = new mongoose.Schema(
     },
     phoneNumber: { type: Number, required: true },
     linkedInProfile: { type: String, required: true },
+    imageId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Image",
+      required: true,
+    },
   },
   { timestamps: true }
 );

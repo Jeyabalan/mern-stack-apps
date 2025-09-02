@@ -2,6 +2,13 @@ import React from "react";
 import { Profile } from "../../interfaces";
 
 const PreviewCard = ({ profiles }: { profiles: Profile[] }) => {
+  const bufferToBase64 = (buffer: any) => {
+    const bytes = new Uint8Array(buffer.data);
+    let binary = "";
+    bytes.forEach((b) => (binary += String.fromCharCode(b)));
+    return window.btoa(binary);
+  };
+
   return (
     <div className="bg-gray-100 w-full border rounded shadow p-5 flex flex-wrap gap-4">
       {profiles.length === 0 && (
@@ -13,7 +20,9 @@ const PreviewCard = ({ profiles }: { profiles: Profile[] }) => {
         <div className="bg-white p-4 flex gap-2 w-[450px] border rounded shadow">
           <img
             className="rounded shadow border"
-            src="assets/avathar.png"
+            src={`data:${
+              profile.imageId.img.contentType
+            };base64,${bufferToBase64(profile.imageId.img.data)}`}
             alt="Avathar Image"
             width="100px"
           />

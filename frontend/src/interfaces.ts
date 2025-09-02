@@ -9,4 +9,5 @@ export interface Profile {
   email: string;
   phoneNumber: string;
   linkedInProfile: string;
+  imageId: any;
 }

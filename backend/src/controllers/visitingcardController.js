@@ -2,8 +2,14 @@ import Profile from "../models/profile.js";
 
 export const CreateVisitingCard = async (req, res) => {
   try {
-    const { name, email, phoneNumber, linkedInProfile } = req.body;
-    const profile = new Profile({ name, email, phoneNumber, linkedInProfile });
+    const { name, email, phoneNumber, linkedInProfile, imageId } = req.body;
+    const profile = new Profile({
+      name,
+      email,
+      phoneNumber,
+      linkedInProfile,
+      imageId,
+    });
     await profile.save();
     res.status(201).json(profile);
   } catch (error) {
@@ -14,7 +20,7 @@ export const CreateVisitingCard = async (req, res) => {
 
 export const getVisitingCards = async (req, res) => {
   try {
-    const profiles = await Profile.find();
+    const profiles = await Profile.find().populate("imageId");
     res.status(200).json(profiles);
   } catch (error) {
     console.log(`Error in getting Visiting cards, ${error}`);
