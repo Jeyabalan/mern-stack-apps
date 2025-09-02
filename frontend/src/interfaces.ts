@@ -3,3 +3,10 @@ export interface Task {
   description: string;
   completed: boolean;
 }
+
+export interface Profile {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  linkedInProfile: string;
+}

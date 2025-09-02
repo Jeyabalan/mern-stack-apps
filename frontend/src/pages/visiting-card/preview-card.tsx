@@ -1,26 +1,41 @@
 import React from "react";
+import { Profile } from "../../interfaces";
 
-const PreviewCard = () => {
+const PreviewCard = ({ profiles }: { profiles: Profile[] }) => {
   return (
-    <div className="bg-gray-100 w-full block border rounded shadow p-5">
-      <div className="bg-white p-4 flex flex-row gap-2">
-        <img src="assets/avathar.png" alt="Avathar Image" width="10%" />
-        <div className="flex flex-col">
-          <p className="font-bold text-2xl mt-1">JEYABALAN THAVAMANI</p>
-          <p className=" mt-1">Email: giribala14@gmail.com</p>
-          <p className=" mt-1">Phone Number: +91-9629622960</p>
-          <div className="flex flex-row gap-1  mt-1">
-            <p>Website:</p>
-            <a
-              href="http://linkedin.com/jeyabalant"
-              
-              className="underline text-blue-600"
-            >
-              http://linkedin.com/jeyabalant
-            </a>
+    <div className="bg-gray-100 w-full border rounded shadow p-5 flex flex-wrap gap-4">
+      {profiles.length === 0 && (
+        <p className="bg-red-600 font-bold text-white p-4">
+          No Visiting Card Found
+        </p>
+      )}
+      {profiles.map((profile: Profile) => (
+        <div className="bg-white p-4 flex gap-2 w-[450px] border rounded shadow">
+          <img
+            className="rounded shadow border"
+            src="assets/avathar.png"
+            alt="Avathar Image"
+            width="100px"
+          />
+          <div className="flex flex-col">
+            <p className="font-bold text-2xl mt-1">
+              {profile.name.toUpperCase()}
+            </p>
+            <p className=" mt-1">Email: {profile.email}</p>
+            <p className=" mt-1">Phone Number: +91-{profile.phoneNumber}</p>
+            <div className="flex flex-row gap-1  mt-1">
+              <p>Website:</p>
+              <a
+                href={profile.linkedInProfile}
+                target="_blank"
+                className="underline text-blue-600"
+              >
+                {profile.linkedInProfile}
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

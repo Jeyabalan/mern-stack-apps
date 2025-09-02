@@ -1,19 +1,33 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PreviewCard from "./preview-card";
+import api from "../../axios-config";
+import { Profile } from "../../interfaces";
 
 const VisitingCard = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+
+  const getvisitingCard = async () => {
+    await api.get("/profile").then((res) => setProfiles([...res.data]));
+  };
+
+  useEffect(() => {
+    getvisitingCard();
+  }, []);
 
   const clearForm = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     formRef.current?.reset();
   };
 
-  const createVisitingCard = (e: React.MouseEvent<HTMLFormElement>) => {
+  const createVisitingCard = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    console.log(Object.fromEntries(formData.entries()));
+    const params = Object.fromEntries(formData.entries());
+    await api.post("/profile", params);
+    formRef.current?.reset();
+    getvisitingCard();
   };
 
   return (
@@ -67,7 +81,7 @@ const VisitingCard = () => {
               className="mt-2 w-full border-2 rounded shadow p-1.5 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
             />
           </div>
-          <div className="block mb-4">
+          {/* <div className="block mb-4">
             <label htmlFor="message" className="block font-bold text-gray-700">
               Message:
             </label>
@@ -76,14 +90,17 @@ const VisitingCard = () => {
               placeholder="Your Message"
               className="block w-full p-1.5 mt-2 border-2 rounded shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
             ></textarea>
-          </div>
+          </div> */}
           <div className="block mb-4">
-            <label htmlFor="profile" className="block font-bold text-gray-700">
+            <label
+              htmlFor="linkedInProfile"
+              className="block font-bold text-gray-700"
+            >
               Linked In Profile:
             </label>
             <input
               type="text"
-              name="profile"
+              name="linkedInProfile"
               className="block w-full border-2 rounded shadow p-1.5 mt-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
             />
           </div>
@@ -113,7 +130,7 @@ const VisitingCard = () => {
             </button>
           </div>
         </form>
-        <PreviewCard />
+        <PreviewCard profiles={profiles} />
       </main>
     </div>
   );
