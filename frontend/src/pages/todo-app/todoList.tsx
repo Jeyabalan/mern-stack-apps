@@ -15,12 +15,12 @@ export default function TodoList({ taskList }: { taskList: Task[] }) {
   }, [taskList]);
 
   const taskCompleted = async (id: string) => {
-    await api.patch(`task/${id}`, { completed: true });
+    await api.patch(`/task/${id}`, { completed: true });
     getTasks();
   };
 
   const deleteTask = async (id: string) => {
-    await api.delete(`task/${id}`);
+    await api.delete(`/task/${id}`);
     getTasks();
   };
 
@@ -87,8 +87,13 @@ export default function TodoList({ taskList }: { taskList: Task[] }) {
               </button>
               <button
                 type="button"
+                disabled={task.completed}
                 onClick={() => deleteTask(task._id)}
-                className="border shadow p-2 rounded-md bg-gray-400 hover:bg-gray-500 text-white"
+                className={`border shadow p-2 rounded-md bg-gray-400 ${
+                  task.completed
+                    ? "hover:bg-gray-400 cursor-not-allowed"
+                    : "hover:bg-gray-500"
+                } text-white`}
               >
                 Delete
               </button>

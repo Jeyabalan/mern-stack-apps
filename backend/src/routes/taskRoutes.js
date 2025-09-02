@@ -9,11 +9,6 @@ import {
 
 const router = express.Router();
 
-router.use((req, res, next) => {
-  console.log("Task Router Hit:", req.method, req.url);
-  next();
-});
-
 router.get("/", getTasks);
 router.post("/", createTask);
 router.patch("/:id", updateTask);

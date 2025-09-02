@@ -9,7 +9,6 @@ export default function Todo() {
 
   const getTasks = async () => {
     await api.get("/task").then((res) => {
-      console.log(res);
       setTasks([...res.data]);
     });
   };
