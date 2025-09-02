@@ -8,6 +8,7 @@ import {
   Routes,
 } from "react-router-dom";
 import Todo from "./pages/todo-app/todo";
+import VisitingCard from "./pages/visiting-card";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <main className="flex-1 p-4 bg-white">
             <Routes>
               <Route path="/" element={<Todo />} />
+              <Route path="/visiting-card" element={<VisitingCard />} />
             </Routes>
           </main>
         </section>
