@@ -2,7 +2,7 @@ import React from "react";
 import { Profile } from "../../interfaces";
 
 const PreviewCard = ({ profiles }: { profiles: Profile[] }) => {
-  const bufferToBase64 = (buffer: any) => {
+  const bufferToBase64 = (buffer: { data: ArrayBufferLike }) => {
     const bytes = new Uint8Array(buffer.data);
     let binary = "";
     bytes.forEach((b) => (binary += String.fromCharCode(b)));
@@ -17,13 +17,16 @@ const PreviewCard = ({ profiles }: { profiles: Profile[] }) => {
         </p>
       )}
       {profiles.map((profile: Profile) => (
-        <div className="bg-white p-4 flex gap-2 w-[450px] border rounded shadow">
+        <div
+          key={profile._id}
+          className="bg-white p-4 flex gap-2 w-[450px] border rounded shadow"
+        >
           <img
             className="rounded shadow border"
             src={`data:${
               profile.imageId.img.contentType
             };base64,${bufferToBase64(profile.imageId.img.data)}`}
-            alt="Avathar Image"
+            alt={profile.name}
             width="100px"
           />
           <div className="flex flex-col">
@@ -37,6 +40,7 @@ const PreviewCard = ({ profiles }: { profiles: Profile[] }) => {
               <a
                 href={profile.linkedInProfile}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="underline text-blue-600"
               >
                 {profile.linkedInProfile}

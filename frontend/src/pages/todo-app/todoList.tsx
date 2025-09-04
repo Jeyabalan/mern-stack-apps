@@ -46,7 +46,7 @@ export default function TodoList({ taskList }: { taskList: Task[] }) {
           </tr>
         )}
         {tasks.map((task: Task, index: number) => (
-          <tr>
+          <tr key={task._id}>
             <td
               className={`border border-cyan-800 p-2 text-center ${
                 task.completed ? "line-through text-gray-400" : ""

@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Todo from "./pages/todo-app/todo";
 import VisitingCard from "./pages/visiting-card";
+import OTPAppPage from "./pages/otp-app";
 
 function App() {
   return (
@@ -43,15 +44,18 @@ function App() {
               </ul>
             </nav>
           </menu>
-          <main className="flex-1 p-4 bg-white">
+          <main className="flex-1 p-4 bg-white h-screen">
             <Routes>
               <Route path="/" element={<Todo />} />
               <Route path="/visiting-card" element={<VisitingCard />} />
+              <Route path="/otp-app" element={<OTPAppPage />} />
             </Routes>
           </main>
         </section>
       </Router>
-      <footer className="bg-gray-500 text-white text-center p-2">Footer</footer>
+      <footer className="bg-gray-500 text-white text-center p-2 fixed bottom-0 w-full">
+        Footer
+      </footer>
     </div>
   );
 }
