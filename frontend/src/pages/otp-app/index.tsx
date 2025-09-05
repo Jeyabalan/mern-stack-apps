@@ -11,6 +11,10 @@ const OTPAppPage = () => {
   const [tabIndex, setTabIndex] = useState<number>(1);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const generateOtp = async () => {
+    console.log("Generating OTP...");
+  };
+
   const onOtpChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -25,9 +29,12 @@ const OTPAppPage = () => {
   };
 
   useEffect(() => {
-    console.log(tabIndex);
     inputRefs.current[tabIndex]?.focus();
   }, [tabIndex]);
+
+  useEffect(() => {
+    if (otpScreenVisible) generateOtp();
+  }, [otpScreenVisible]);
 
   const validateOTP = () => {
     console.log("otp validate");
